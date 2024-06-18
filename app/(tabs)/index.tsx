@@ -1,61 +1,64 @@
-import { ImageBackground } from "react-native";
-import hotBackground from "@/assets/hot.png";
-import coldBackground from "@/assets/cold.png";
+import { ImageBackground, ScrollView } from "react-native";
 import { s } from "../../App.style";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { Input } from "@/components/Input/Input";
-import { DisplayTemperature } from "@/components/DisplayTemperature/DisplayTemperature";
-import { ButtonConvert } from "@/components/ButtonConvert/ButtonConvert";
-import { useState } from "react";
+import React, { useState } from "react";
+import { Header } from "@/components/Header/Header";
+import { CardTodo } from "@/components/CardTodo/CardTodo";
 
-import {
-  UNITS,
-  convertTemperatureTo,
-  getOppositeUnit,
-  isIceTemperature,
-} from "@/utils/temperature";
+const TODO_LIST = [
+  {
+    id: 1,
+    title: "Learn React Native",
+    description: "Learn how to build mobile applications with React Native.",
+    isCompleted: true,
+  },
+  {
+    id: 2,
+    title: "Learn TypeScript",
+    description: "Learn how to write type-safe JavaScript with TypeScript.",
+    isCompleted: false,
+  },
+  {
+    id: 3,
+    title: "Learn Expo",
+    description: "Learn how to use the Expo platform to build mobile apps.",
+    isCompleted: false,
+  },
+];
 
 export default function HomeScreen() {
-  const [inputValue, setInputValue] = useState(0);
-  const [currentUnit, setCurrentUnit] = useState(UNITS.celcius);
+  const [todoList, setTodoList] = useState([
+    ...TODO_LIST,
+    ...TODO_LIST,
+    ...TODO_LIST,
+    ...TODO_LIST,
+  ]);
 
-  const oppositeUnit = getOppositeUnit(currentUnit);
-
-  function getConvertedTemperature() {
-    if (isNaN(inputValue)) {
-      return "";
-    } else {
-      return convertTemperatureTo(inputValue, oppositeUnit);
-    }
-  }
+  const renderTodoList = () => {
+    return todoList.map((todo) => (
+      <View key={todo.id} style={s.cardItem}>
+        <CardTodo key={todo.id} todo={todo} />
+      </View>
+    ));
+  };
 
   return (
-    <ImageBackground
-      source={isIceTemperature(inputValue) ? coldBackground : hotBackground}
-      style={s.backgroundImg}
-    >
+    <>
       <SafeAreaProvider>
-        <SafeAreaView style={s.root}>
-          <View style={s.workspace}>
-            <DisplayTemperature
-              unit={oppositeUnit}
-              temperature={getConvertedTemperature()}
-            />
-            <Input
-              defaultValue={0}
-              onChange={setInputValue}
-              unit={currentUnit}
-            />
-            <ButtonConvert
-              onPress={() => {
-                setCurrentUnit(oppositeUnit);
-              }}
-              unit={oppositeUnit}
-            />
+        <SafeAreaView style={s.app}>
+          <View style={s.header}>
+            <Header />
+          </View>
+          <View style={s.body}>
+            <ScrollView style={s.scrollView}>{renderTodoList()}</ScrollView>
           </View>
         </SafeAreaView>
       </SafeAreaProvider>
-    </ImageBackground>
+
+      <View style={s.footer}>
+        <Text>Footer</Text>
+      </View>
+    </>
   );
 }

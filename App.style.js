@@ -5,14 +5,18 @@ export const s = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 20,
+    backgroundColor: "#fff",
   },
-  workspace: {
-    height: 450,
-    alignItems: "center",
-    justifyContent: "space-evenly",
+  app: {
+    flex: 1,
+    backgroundColor: "#F9F9F9",
+    padding: 15,
   },
-  backgroundImg: {
-    height: "100%",
-    // border: "1px solid red",
+  header: { flex: 1 },
+  body: { flex: 5, gap: 10 },
+  footer: { height: 70 },
+  scrollView: { gap: 20 },
+  cardItem: {
+    marginTop: 10,
   },
 });
